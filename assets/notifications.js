@@ -420,8 +420,10 @@ var Notifications = (function(options) {
         });
     };
 
-    // register click events on jQuery elements
-    this.registerClickEvents();
+    setTimeout(function () {
+        // register click events on jQuery elements
+        this.registerClickEvents();
+    }, 2000);
 
     // Fire the initial poll
     this.poll();

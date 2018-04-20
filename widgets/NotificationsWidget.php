@@ -234,7 +234,16 @@ class NotificationsWidget extends Widget
             }
         }
 
-        $js = 'Notifications(' . Json::encode($params) . ');';
+        $params = Json::encode($params);
+        $listSelector = $this->listSelector;
+        $js = <<<JS
+var i = setInterval(function () {
+        if ($('$listSelector').length) {
+            Notifications($params);
+            clearInterval(i);
+        }
+    }, 100)
+JS;
 
         $view->registerJs($js);
     }
