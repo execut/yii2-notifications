@@ -225,10 +225,19 @@ var Notifications = (function(options) {
             self.markSeen($(this).parents('.notification').data('id'));
             $(this).parents('.notification').hide();
 
+            var currentCounter, currentVal;
             // Update all counters
             for (var i = 0; i < self.opts.counters.length; i++) {
-                if ($(self.opts.counters[i]).text() != parseInt($(self.opts.counters[i]).html())-1) {
-                    $(self.opts.counters[i]).text(parseInt($(self.opts.counters[i]).html())-1);
+                currentCounter = $(self.opts.counters[i]);
+                currentVal = parseInt($(self.opts.counters[i]).html())-1;
+                if (currentCounter.text() != currentVal) {
+                    currentCounter.text(currentVal);
+                }
+
+                if (currentVal == 0) {
+                    currentCounter.addClass('zero-counter');
+                } else {
+                    currentCounter.removeClass('zero-counter');
                 }
             }
 
@@ -298,7 +307,7 @@ var Notifications = (function(options) {
             },
             success: function(data) {
                 var engine = self.themes[self.opts.theme];
-                var elem, difference, notifId;
+                var elem, difference, notifId, currentCounter;
                 var returned = [];
 
                 $.each(data, function (index, object) {
@@ -348,8 +357,15 @@ var Notifications = (function(options) {
 
                 // Update all counters
                 for (var i = 0; i < self.opts.counters.length; i++) {
-                    if ($(self.opts.counters[i]).text() != data.length) {
-                        $(self.opts.counters[i]).text(data.length);
+                    currentCounter = $(self.opts.counters[i]);
+                    if (currentCounter.text() != data.length) {
+                        currentCounter.text(data.length);
+                    }
+
+                    if (data.length == 0) {
+                        currentCounter.addClass('zero-counter');
+                    } else {
+                        currentCounter.removeClass('zero-counter');
                     }
                 }
 
